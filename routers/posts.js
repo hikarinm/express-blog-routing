@@ -1,9 +1,12 @@
 const express = require('express');
 const router = express.Router();
 
+const posts = require('../data/posts');
+
 // Index (cRud)
 router.get('/', (req, res) => {
-    res.send(`You requested the homepage`)
+    // res.send(`You requested the homepage`)
+    res.json(posts)
 })
 
 //Show (cRud)
