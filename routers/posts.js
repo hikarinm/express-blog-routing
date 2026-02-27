@@ -1,37 +1,23 @@
 const express = require('express');
 const router = express.Router();
-
-const posts = require('../data/posts');
+const postController = require('../controllers/postsController')
 
 // Index (cRud)
-router.get('/', (req, res) => {
-    // res.send(`You requested the homepage`)
-    res.json(posts)
-})
+router.get('/', postController.Index)
 
 //Show (cRud)
-router.get('/:id', (req, res) => {
-    res.send(`You requested to show the post with id ${req.params.id}`)
-})
+router.get('/:id', postController.Show)
 
 //Store (Crud)
-router.post('/', (req, res) => {
-    res.send(`You requested to create a new post`)
-})
+router.post('/', postController.Store)
 
 //Update (crUd)
-router.put('/:id', (req, res) => {
-    res.send(`You requested to update the post with id ${req.params.id}`)
-})
+router.put('/:id', postController.Update)
 
 //Modify (crUd)
-router.patch('/:id', (req, res) => {
-    res.send(`You requested to modify the post with id ${req.params.id}`)
-})
+router.patch('/:id', postController.Modify)
 
 //Destroy (cruD)
-router.delete('/:id', (req, res) => {
-    res.send(`You requested to delete the post with id ${req.params.id}`)
-})
+router.delete('/:id', postController.Delete)
 
 module.exports = router;
