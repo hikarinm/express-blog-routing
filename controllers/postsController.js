@@ -7,7 +7,17 @@ function Index(req, res) {
 
 //Show (cRud)
 function Show(req, res) {
-    res.send(`You requested to show the post with id ${req.params.id}`)
+    // res.send(`You requested to show the post with id ${req.params.id}`)
+
+    //Convert the ID from string parameters to a Number
+    const id = Number(req.params.id);
+
+    //Search for the specific post that matches the given ID
+    const result = posts.find(post => post.id === id);
+
+    //Return the found post as a JSON object
+    res.json(result)
+    // console.log(result)
 }
 
 //Store (Crud)
