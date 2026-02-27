@@ -23,7 +23,7 @@ function Show(req, res) {
 
     //Handle the case where no post matches the given ID
     if (!result) {
-        return res.status(404).json({ error: 'Not found', message: `No post found with id ${id} ` })
+        return res.status(404).json({ error: 'Not found', message: `No post found with ID ${id} ` })
     }
 
     //Return the found post as a JSON object
@@ -47,8 +47,34 @@ function Modify(req, res) {
 }
 
 //Destroy (cruD)
-function Delete(req, res) {
-    res.send(`You requested to delete the post with id ${req.params.id}`)
+function Destroy(req, res) {
+    // res.send(`You requested to delete the post with id ${req.params.id}`)
+
+    //Convert the ID from string parameters to a Number
+    const id = Number(req.params.id);
+
+    //Validate that the ID is a valid number
+    if (isNaN(id)) {
+        return res.status(400).json({ error: 'Error', message: `${id} is not a valid ID` })
+
+    }
+
+    //Search for the specific post that matches the given ID 
+    const result = posts.find(post => post.id === id);
+
+    //Handle the case where no post matches the given ID
+    if (!result) {
+        return res.status(404).json({ error: 'Not found', message: `No post found with ID ${id} ` })
+    }
+
+    //Remove the post from the original array using its index
+    posts.splice(posts.indexOf(result), 1);
+
+    console.log(`Deleted post with ID ${id}`, posts)
+
+    //Send status 204 (No Content) to confirm successful deletion
+    return res.sendStatus(204)
+
 }
 
 
@@ -58,7 +84,7 @@ const functions = {
     Store,
     Update,
     Modify,
-    Delete
+    Destroy
 }
 
 module.exports = functions
