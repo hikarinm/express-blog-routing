@@ -1,13 +1,34 @@
 const posts = require('../data/posts');
 
 // Index (cRud)
+// function Index(req, res) {
+//     //Initialize result with the full list of posts
+//     let result = posts;
+
+//     //If a 'tag' query parameter is provided, filter the posts array
+//     if (req.query.tag) {
+//         result = posts.filter(post => post.tags.includes(req.query.tag)) //Matches the exact string
+//     }
+
+//     console.log('Filtered posts', result)
+
+//     //Send the resulting list as a JSON response
+//     res.json(result)
+// }
+
+//Index (cRud) case-insensitive
 function Index(req, res) {
     //Initialize result with the full list of posts
     let result = posts;
 
-    //If a 'tag' query parameter is provided, filter the posts array
+    //If a 'tag' query parameter is provided, filter the posts array (case-insensitive)
     if (req.query.tag) {
-        result = posts.filter(post => post.tags.includes(req.query.tag)) //Matches the exact string
+        //Normalize the query parameter to lowercase for case-insensitive matching
+        const queryTag = req.query.tag.toLowerCase();
+        //Filter posts where at least one tag matches the query string
+        result = posts.filter(post =>
+            //.some() checks if at least one tag in the array satisfies the condition
+            post.tags.some(tag => tag.toLowerCase() === queryTag))
     }
 
     console.log('Filtered posts', result)
