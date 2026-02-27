@@ -12,8 +12,19 @@ function Show(req, res) {
     //Convert the ID from string parameters to a Number
     const id = Number(req.params.id);
 
-    //Search for the specific post that matches the given ID
+    //Validate that the ID is a valid number
+    if (isNaN(id)) {
+        return res.status(400).json({ error: 'Error', message: `${id} is not a valid ID` })
+
+    }
+
+    //Search for the specific post that matches the given ID 
     const result = posts.find(post => post.id === id);
+
+    //Handle the case where no post matches the given ID
+    if (!result) {
+        return res.status(404).json({ error: 'Not found', message: `No post found with id ${id} ` })
+    }
 
     //Return the found post as a JSON object
     res.json(result)
