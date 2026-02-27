@@ -2,7 +2,18 @@ const posts = require('../data/posts');
 
 // Index (cRud)
 function Index(req, res) {
-    res.json(posts)
+    //Initialize result with the full list of posts
+    let result = posts;
+
+    //If a 'tag' query parameter is provided, filter the posts array
+    if (req.query.tag) {
+        result = posts.filter(post => post.tags.includes(req.query.tag)) //Matches the exact string
+    }
+
+    console.log('Filtered posts', result)
+
+    //Send the resulting list as a JSON response
+    res.json(result)
 }
 
 //Show (cRud)
