@@ -18,6 +18,6 @@ router.put('/:id', postController.Update)
 router.patch('/:id', postController.Modify)
 
 //Destroy (cruD)
-router.delete('/:id', postController.Delete)
+router.delete('/:id', postController.Destroy)
 
 module.exports = router;
