@@ -46,7 +46,7 @@ function show(req, res) {
 
     //Validate that the ID is a valid number
     if (isNaN(id)) {
-        return res.status(400).json({ error: 'Error', message: `${id} is not a valid ID` })
+        return res.status(400).json({ error: 'Bad Request', message: `${id} is not a valid number` })
 
     }
 
@@ -85,7 +85,29 @@ function store(req, res) {
 
 //Update (crUd)
 function update(req, res) {
-    res.send(`You requested to update the post with id ${req.params.id}`)
+    console.log(`You requested to update the post with id ${req.params.id}`, req.body)
+
+    //Convert the ID from string parameters to a Number
+    const id = Number(req.params.id);
+    //Validate that the ID is a valid number
+    if (isNaN(id)) {
+        return res.status(400).json({ error: 'Bad Request', message: `${id} is not a valid number` })
+    }
+    //Search for the specific post that matches the given ID 
+    const result = posts.find(post => post.id === id);
+    //Handle the case where no post matches the given ID
+    if (!result) {
+        return res.status(404).json({ error: 'Not found', message: `No post found with ID ${id} ` })
+    }
+
+    //Update the post properties with the new data from the request body
+    result.title = req.body.title;
+    result.content = req.body.content;
+    result.image = req.body.image;
+    result.tags = req.body.tags;
+
+    //Return the updated post
+    return res.json(result)
 }
 
 //Modify (crUd)
