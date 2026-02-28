@@ -17,7 +17,7 @@ const posts = require('../data/posts');
 // }
 
 //Index (cRud) case-insensitive
-function Index(req, res) {
+function index(req, res) {
     //Initialize result with the full list of posts
     let result = posts;
 
@@ -38,7 +38,7 @@ function Index(req, res) {
 }
 
 //Show (cRud)
-function Show(req, res) {
+function show(req, res) {
     // res.send(`You requested to show the post with id ${req.params.id}`)
 
     //Convert the ID from string parameters to a Number
@@ -64,22 +64,37 @@ function Show(req, res) {
 }
 
 //Store (Crud)
-function Store(req, res) {
-    res.send(`You requested to create a new post`)
+function store(req, res) {
+    console.log(`You requested to create a new post`, req.body)
+
+    //Create a new post object with the required parameters
+    const newPost = {
+        id: posts[posts.length - 1].id + 1,
+        title: req.body.title,
+        content: req.body.content,
+        image: req.body.image,
+        tags: req.body.tags,
+    }
+
+    //Add the new post to the local data array
+    posts.push(newPost)
+
+    //Respond with the HHTP status 201 (created) and the new object
+    return res.status(201).json(newPost)
 }
 
 //Update (crUd)
-function Update(req, res) {
+function update(req, res) {
     res.send(`You requested to update the post with id ${req.params.id}`)
 }
 
 //Modify (crUd)
-function Modify(req, res) {
+function modify(req, res) {
     res.send(`You requested to modify the post with id ${req.params.id}`)
 }
 
 //Destroy (cruD)
-function Destroy(req, res) {
+function destroy(req, res) {
     // res.send(`You requested to delete the post with id ${req.params.id}`)
 
     //Convert the ID from string parameters to a Number
@@ -109,14 +124,11 @@ function Destroy(req, res) {
 
 }
 
-
-const functions = {
-    Index,
-    Show,
-    Store,
-    Update,
-    Modify,
-    Destroy
+module.exports = {
+    index,
+    show,
+    store,
+    update,
+    modify,
+    destroy
 }
-
-module.exports = functions

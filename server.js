@@ -4,8 +4,9 @@ const postsRouter = require('./routers/posts'); //Import the router for posts en
 const app = express() //Initialize the express application
 const port = 3000 //Define the server port
 
-//Configure static assets (images, css, etc.) to be served from the 'public' folder
-app.use(express.static('public'));
+
+app.use(express.static('public')); //Configure static assets (images, css, etc.) to be served from the 'public' folder
+app.use(express.json()) //Allows the server to read data sent in the request body (req.body)
 
 //Main Route
 app.get('/', (req, res) => {
