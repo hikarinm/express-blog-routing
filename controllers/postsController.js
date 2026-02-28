@@ -79,7 +79,8 @@ function store(req, res) {
 
     //Create a new post object with the required parameters
     const newPost = {
-        id: posts[posts.length - 1].id + 1,
+        // id: posts[posts.length - 1].id + 1,
+        id: Math.max(...posts.map(post => post.id)) + 1,
         title: req.body.title,
         content: req.body.content,
         image: req.body.image,
