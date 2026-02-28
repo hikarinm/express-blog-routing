@@ -112,7 +112,41 @@ function update(req, res) {
 
 //Modify (crUd)
 function modify(req, res) {
-    res.send(`You requested to modify the post with id ${req.params.id}`)
+    console.log(`You requested to modify the post with id ${req.params.id}`, req.body)
+
+    //Convert the ID from string parameters to a Number
+    const id = Number(req.params.id);
+    //Validate that the ID is a valid number
+    if (isNaN(id)) {
+        return res.status(400).json({ error: 'Bad Request', message: `${id} is not a valid number` })
+    }
+    //Search for the specific post that matches the given ID 
+    const result = posts.find(post => post.id === id);
+    //Handle the case where no post matches the given ID
+    if (!result) {
+        return res.status(404).json({ error: 'Not found', message: `No post found with ID ${id} ` })
+    }
+
+    //Update only the properties provided in the request body
+
+    //Check if title exists and is not just empty spaces using Optional Chaining (?.)
+    if (req.body.title?.trim()) {
+        result.title = req.body.title;
+    }
+    // Check if content is provided
+    if (req.body.content) {
+        result.content = req.body.content;
+    }
+    if (req.body.image) {
+        result.image = req.body.image;
+    }
+    //Ensure tags exists and is an array with at least one element
+    if (req.body.tags && req.body.tags.length > 0) {
+        result.tags = req.body.tags;
+    }
+
+    //Return the updated post
+    return res.json(result)
 }
 
 //Destroy (cruD)
