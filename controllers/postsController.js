@@ -1,3 +1,4 @@
+const { error } = require('console');
 const posts = require('../data/posts');
 
 // Index (cRud)
@@ -76,6 +77,15 @@ function store(req, res) {
         //Return a 400 error indicating exactly which fields are missing
         return res.status(400).json({ error: 'Bad Request', message: `Missing required fields: ${missingFields}` })
     }
+
+    //Check if a post with the same title already exists (case-insensitive)
+    const titleCheck = posts.some(post => post.title.toLowerCase() === req.body.title.toLowerCase());
+
+    //If the title already exists, return error 409 (Conflict status)
+    if (titleCheck) {
+        return res.status(409).json({ error: 'Conflict', message: 'A post with the same title already exist' })
+    }
+
 
     //Create a new post object with the required parameters
     const newPost = {
