@@ -67,6 +67,16 @@ function show(req, res) {
 function store(req, res) {
     console.log(`You requested to create a new post`, req.body)
 
+    //Check if all required fields are present in the request body
+    if (!req.body.title || !req.body.content || !req.body.image || !req.body.tags) {
+        //Define the list of mandatory fields
+        const requiredFields = ['title', 'content', 'image', 'tags'];
+        //Identify which fields are missing or empty
+        const missingFields = requiredFields.filter(field => !req.body[field]);
+        //Return a 400 error indicating exactly which fields are missing
+        return res.status(400).json({ error: 'Bad Request', message: `Missing required fields: ${missingFields}` })
+    }
+
     //Create a new post object with the required parameters
     const newPost = {
         id: posts[posts.length - 1].id + 1,
