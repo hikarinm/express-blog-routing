@@ -2,6 +2,7 @@ const express = require('express') //Import express framework
 const postsRouter = require('./routers/posts'); //Import the router for posts entity
 const notFound = require('./middlewares/notFound');
 const errorsHandler = require('./middlewares/errorsHandler');
+const checkTime = require('./middlewares/checkTime');
 
 const app = express() //Initialize the express application
 const port = 3000 //Define the server port
@@ -16,8 +17,9 @@ app.get('/', (req, res) => {
     res.send('Server del mio Blog!') //Text response
 })
 
-// Setup posts routes with '/posts' prefix
-app.use('/posts', postsRouter)
+
+app.use(checkTime)
+app.use('/posts', postsRouter)// Setup posts routes with '/posts' prefix
 app.use(notFound)
 app.use(errorsHandler)
 

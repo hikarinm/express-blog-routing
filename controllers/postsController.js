@@ -40,24 +40,7 @@ function index(req, res) {
 
 //Show (cRud)
 function show(req, res) {
-    // res.send(`You requested to show the post with id ${req.params.id}`)
-
-    //Convert the ID from string parameters to a Number
-    const id = Number(req.params.id);
-
-    //Validate that the ID is a valid number
-    if (isNaN(id)) {
-        return res.status(400).json({ error: 'Bad Request', message: `${id} is not a valid number` })
-
-    }
-
-    //Search for the specific post that matches the given ID 
-    const result = posts.find(post => post.id === id);
-
-    //Handle the case where no post matches the given ID
-    if (!result) {
-        return res.status(404).json({ error: 'Not found', message: `No post found with ID ${id} ` })
-    }
+    const result = req.postFound;
 
     //Return the found post as a JSON object
     res.json(result)
@@ -108,19 +91,6 @@ function store(req, res) {
 function update(req, res) {
     console.log(`You requested to update the post with id ${req.params.id}`, req.body)
 
-    //Convert the ID from string parameters to a Number
-    const id = Number(req.params.id);
-    //Validate that the ID is a valid number
-    if (isNaN(id)) {
-        return res.status(400).json({ error: 'Bad Request', message: `${id} is not a valid number` })
-    }
-    //Search for the specific post that matches the given ID 
-    const result = posts.find(post => post.id === id);
-    //Handle the case where no post matches the given ID
-    if (!result) {
-        return res.status(404).json({ error: 'Not found', message: `No post found with ID ${id} ` })
-    }
-
     //Check if all required fields are present in the request body
     if (!req.body.title || !req.body.content || !req.body.image || !req.body.tags) {
         //Define the list of mandatory fields
@@ -130,7 +100,7 @@ function update(req, res) {
         //Return a 400 error indicating exactly which fields are missing
         return res.status(400).json({ error: 'Bad Request', message: `Missing required fields: ${missingFields}` })
     }
-
+    const result = req.postFound;
     //Update the post properties with the new data from the request body
     result.title = req.body.title;
     result.content = req.body.content;
@@ -144,20 +114,7 @@ function update(req, res) {
 //Modify (crUd)
 function modify(req, res) {
     console.log(`You requested to modify the post with id ${req.params.id}`, req.body)
-
-    //Convert the ID from string parameters to a Number
-    const id = Number(req.params.id);
-    //Validate that the ID is a valid number
-    if (isNaN(id)) {
-        return res.status(400).json({ error: 'Bad Request', message: `${id} is not a valid number` })
-    }
-    //Search for the specific post that matches the given ID 
-    const result = posts.find(post => post.id === id);
-    //Handle the case where no post matches the given ID
-    if (!result) {
-        return res.status(404).json({ error: 'Not found', message: `No post found with ID ${id} ` })
-    }
-
+    const result = req.postFound;
     //Update only the properties provided in the request body
     //Check if title exists and is not just empty spaces using Optional Chaining (?.)
     if (req.body.title?.trim()) {
@@ -181,25 +138,8 @@ function modify(req, res) {
 
 //Destroy (cruD)
 function destroy(req, res) {
-    // res.send(`You requested to delete the post with id ${req.params.id}`)
-
-    //Convert the ID from string parameters to a Number
-    const id = Number(req.params.id);
-
-    //Validate that the ID is a valid number
-    if (isNaN(id)) {
-        return res.status(400).json({ error: 'Error', message: `${id} is not a valid ID` })
-
-    }
-
-    //Search for the specific post that matches the given ID 
-    const result = posts.find(post => post.id === id);
-
-    //Handle the case where no post matches the given ID
-    if (!result) {
-        return res.status(404).json({ error: 'Not found', message: `No post found with ID ${id} ` })
-    }
-
+    const id = Number(req.params.id)
+    const result = req.postFound;
     //Remove the post from the original array using its index
     posts.splice(posts.indexOf(result), 1);
 
