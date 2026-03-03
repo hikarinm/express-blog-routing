@@ -1,5 +1,7 @@
 const express = require('express') //Import express framework
 const postsRouter = require('./routers/posts'); //Import the router for posts entity
+const notFound = require('./middlewares/notFound');
+const errorsHandler = require('./middlewares/errorsHandler');
 
 const app = express() //Initialize the express application
 const port = 3000 //Define the server port
@@ -16,6 +18,8 @@ app.get('/', (req, res) => {
 
 // Setup posts routes with '/posts' prefix
 app.use('/posts', postsRouter)
+app.use(notFound)
+app.use(errorsHandler)
 
 //Start the server and listen for incoming requests
 app.listen(port, () => {

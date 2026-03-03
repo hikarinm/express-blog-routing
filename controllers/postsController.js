@@ -121,6 +121,16 @@ function update(req, res) {
         return res.status(404).json({ error: 'Not found', message: `No post found with ID ${id} ` })
     }
 
+    //Check if all required fields are present in the request body
+    if (!req.body.title || !req.body.content || !req.body.image || !req.body.tags) {
+        //Define the list of mandatory fields
+        const requiredFields = ['title', 'content', 'image', 'tags'];
+        //Identify which fields are missing or empty
+        const missingFields = requiredFields.filter(field => !req.body[field]);
+        //Return a 400 error indicating exactly which fields are missing
+        return res.status(400).json({ error: 'Bad Request', message: `Missing required fields: ${missingFields}` })
+    }
+
     //Update the post properties with the new data from the request body
     result.title = req.body.title;
     result.content = req.body.content;
@@ -149,7 +159,6 @@ function modify(req, res) {
     }
 
     //Update only the properties provided in the request body
-
     //Check if title exists and is not just empty spaces using Optional Chaining (?.)
     if (req.body.title?.trim()) {
         result.title = req.body.title;
